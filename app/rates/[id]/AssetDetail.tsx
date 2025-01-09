@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -22,7 +23,14 @@ ChartJS.register(
   Legend
 );
 
-export default function AssetDetail({ asset, history }: { asset: any; history: any[] }) {
+export default function AssetDetail({
+  asset,
+  history,
+}: {
+  asset: any;
+  history: any[];
+}) {
+  const router = useRouter();
   const chartData = {
     labels: history.map((point) => new Date(point.time).toLocaleDateString()),
     datasets: [
@@ -37,6 +45,12 @@ export default function AssetDetail({ asset, history }: { asset: any; history: a
 
   return (
     <main className="p-4">
+      <button
+        onClick={() => router.push("/rates")}
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Back to Rates
+      </button>
       <h1 className="text-2xl font-bold mb-4">Asset Details</h1>
       <div className="p-4 border rounded-lg">
         <h2 className="text-xl font-semibold">{asset.name}</h2>

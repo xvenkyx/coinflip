@@ -1,6 +1,8 @@
 import AssetDetail from './AssetDetail';
 
-export default async function AssetPage({ params }: { params: { id: string } }) {
+export default async function AssetPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params; // Await the params to unwrap the promise.
+
   const fetchAssetDetails = async (id: string) => {
     const res = await fetch(`https://api.coincap.io/v2/assets/${id}`);
     if (!res.ok) {
@@ -21,8 +23,8 @@ export default async function AssetPage({ params }: { params: { id: string } }) 
     return data.data;
   };
 
-  const asset = await fetchAssetDetails(params.id);
-  const history = await fetchAssetHistory(params.id);
+  const asset = await fetchAssetDetails(id);
+  const history = await fetchAssetHistory(id);
 
   return <AssetDetail asset={asset} history={history} />;
 }

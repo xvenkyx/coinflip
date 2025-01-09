@@ -1,4 +1,5 @@
 // app/rates/page.tsx (Server Component)
+import Link from "next/link";
 import CryptoList from './CryptoList';
 
 export default async function RatesPage() {
@@ -15,6 +16,9 @@ export default async function RatesPage() {
 
   return (
     <main className="p-4">
+      <Link href="/" className="mb-4 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        Back to Home
+      </Link>
       <h1 className="text-2xl font-bold mb-4">Crypto Rates</h1>
       <CryptoList assets={assets} />
     </main>
