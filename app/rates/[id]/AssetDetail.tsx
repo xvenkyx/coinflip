@@ -37,31 +37,92 @@ export default function AssetDetail({
       {
         label: "Price (USD)",
         data: history.map((point) => parseFloat(point.priceUsd)),
-        borderColor: "rgba(75,192,192,1)",
-        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "rgba(34, 202, 236, 1)",
+        backgroundColor: "rgba(34, 202, 236, 0.2)",
+        tension: 0.4,
       },
     ],
   };
 
   return (
-    <main className="p-4">
-      <button
+    <main className="p-4 bg-gray-50 min-h-screen">
+      {/* <button
         onClick={() => router.push("/rates")}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition-all"
       >
         Back to Rates
+      </button> */}
+
+      {/* SVG from Heroicons */}
+      <button
+        onClick={() => router.push("/rates")}
+        className="mb-4 flex items-center space-x-2 px-3 py-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition-all group"
+        title="Back to Rates"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="w-5 h-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+        {/* <span className="hidden sm:block text-sm font-medium group-hover:underline"> */}
+        <span className="hidden sm:block text-sm font-medium">
+          Back
+        </span>
       </button>
-      <h1 className="text-2xl font-bold mb-4">Asset Details</h1>
-      <div className="p-4 border rounded-lg">
-        <h2 className="text-xl font-semibold">{asset.name}</h2>
-        <p>Symbol: {asset.symbol}</p>
-        <p>Rank: {asset.rank}</p>
-        <p>Price: ${parseFloat(asset.priceUsd).toFixed(2)}</p>
+
+      <div className="p-6 bg-white rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">{asset.name}</h1>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-gray-600 font-semibold">Symbol:</p>
+            <p className="text-lg font-bold text-gray-800">{asset.symbol}</p>
+          </div>
+          <div>
+            <p className="text-gray-600 font-semibold">Rank:</p>
+            <p className="text-lg font-bold text-gray-800">#{asset.rank}</p>
+          </div>
+          <div>
+            <p className="text-gray-600 font-semibold">Price:</p>
+            <p className="text-lg font-bold text-green-600">
+              ${parseFloat(asset.priceUsd).toFixed(2)}
+            </p>
+          </div>
+          <div>
+            <p className="text-gray-600 font-semibold">24h Change:</p>
+            <p
+              className={`text-lg font-bold ${
+                parseFloat(asset.changePercent24Hr) > 0
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >
+              {parseFloat(asset.changePercent24Hr).toFixed(2)}%
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="mt-6">
-        <h2 className="text-lg font-bold mb-2">Price History</h2>
-        <Line data={chartData} />
+      <div className="mt-8 bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">Price History</h2>
+        <div className="w-full max-w-full">
+          <Line
+            data={chartData}
+            options={{
+              maintainAspectRatio: false, // Allow the chart to resize responsively
+              responsive: true,
+            }}
+            height={300}
+          />
+        </div>
       </div>
     </main>
   );

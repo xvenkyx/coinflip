@@ -28,8 +28,10 @@ export default function RootLayout({
       <body className="min-h-screen bg-gray-100">
         <header className="bg-blue-500 text-white p-4">
           <nav className="flex space-x-4">
-            <a href="/" className="hover:underline">Home</a>
-            <a href="/rates" className="hover:underline">Rates</a>
+            <a href="/">Home</a>
+            <a href="/rates">Rates</a>
+            {/* <a href="/" className="hover:underline">Home</a>
+            <a href="/rates" className="hover:underline">Rates</a> */}
           </nav>
         </header>
         <main className="p-4">{children}</main>
