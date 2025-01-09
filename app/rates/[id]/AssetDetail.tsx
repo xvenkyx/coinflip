@@ -31,27 +31,23 @@ export default function AssetDetail({
   history: any[];
 }) {
   const router = useRouter();
-  const chartData = {
-    labels: history.map((point) => new Date(point.time).toLocaleDateString()),
-    datasets: [
-      {
-        label: "Price (USD)",
-        data: history.map((point) => parseFloat(point.priceUsd)),
-        borderColor: "rgba(34, 202, 236, 1)",
-        backgroundColor: "rgba(34, 202, 236, 0.2)",
-        tension: 0.4,
-      },
-    ],
-  };
+  const chartData = history.length
+    ? {
+        labels: history.map((point) => new Date(point.time).toLocaleDateString()),
+        datasets: [
+          {
+            label: "Price (USD)",
+            data: history.map((point) => parseFloat(point.priceUsd)),
+            borderColor: "rgba(34, 202, 236, 1)",
+            backgroundColor: "rgba(34, 202, 236, 0.2)",
+            tension: 0.4,
+          },
+        ],
+      }
+    : null;
 
   return (
     <main className="p-4 bg-gray-50 min-h-screen">
-      {/* <button
-        onClick={() => router.push("/rates")}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition-all"
-      >
-        Back to Rates
-      </button> */}
 
       {/* SVG from Heroicons */}
       <button
@@ -73,7 +69,6 @@ export default function AssetDetail({
             d="M10 19l-7-7m0 0l7-7m-7 7h18"
           />
         </svg>
-        {/* <span className="hidden sm:block text-sm font-medium group-hover:underline"> */}
         <span className="hidden sm:block text-sm font-medium">
           Back
         </span>
@@ -114,14 +109,26 @@ export default function AssetDetail({
       <div className="mt-8 bg-white p-6 rounded-lg shadow-md overflow-x-auto">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Price History</h2>
         <div className="w-full max-w-full">
-          <Line
+          {/* <Line
             data={chartData}
             options={{
               maintainAspectRatio: false, // Allow the chart to resize responsively
               responsive: true,
             }}
             height={300}
+          /> */}
+          {chartData ? (
+          <Line
+            data={chartData}
+            options={{
+              maintainAspectRatio: false,
+              responsive: true,
+            }}
+            height={300}
           />
+        ) : (
+          <p className="text-gray-500">No price history available.</p>
+        )}
         </div>
       </div>
     </main>
