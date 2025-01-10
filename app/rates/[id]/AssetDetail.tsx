@@ -41,6 +41,7 @@ export default function AssetDetail({
             borderColor: "rgba(34, 202, 236, 1)",
             backgroundColor: "rgba(34, 202, 236, 0.2)",
             tension: 0.4,
+            pointRadius: 2, // Reduce point size for better performance
           },
         ],
       }

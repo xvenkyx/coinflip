@@ -3,16 +3,16 @@ import CryptoList from "./CryptoList";
 async function fetchAssets() {
   try {
     const res = await fetch("https://api.coincap.io/v2/assets", {
-      cache: "no-store", // Disable caching for fresh data
+      next: { revalidate: 60 }, // Cache for 60 seconds, with revalidation
     });
     if (!res.ok) {
       throw new Error(`Failed to fetch assets: ${res.statusText}`);
     }
     const data = await res.json();
     return data.data;
-  } catch (error:any) {
+  } catch (error: any) {
     console.error("Error fetching assets:", error.message);
-    return []; // Return empty array to avoid crashes
+    return [];
   }
 }
 

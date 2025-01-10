@@ -16,17 +16,20 @@ async function fetchAssetDetails(id: string) {
 
 async function fetchAssetHistory(id: string) {
   try {
-    const res = await fetch(`https://api.coincap.io/v2/assets/${id}/history?interval=d1`);
+    const res = await fetch(`https://api.coincap.io/v2/assets/${id}/history?interval=d1`, {
+      next: { revalidate: 60 }, // Cache for 60 seconds
+    });
     if (!res.ok) {
       throw new Error(`Failed to fetch asset history: ${res.statusText}`);
     }
     const data = await res.json();
-    return data.data;
-  } catch (error:any) {
+    return data.data.slice(-30); // Limit to the last 30 days of history
+  } catch (error: any) {
     console.error("Error fetching asset history:", error.message);
-    return []; // Return empty array to indicate no history available
+    return []; // Return empty array to avoid crashes
   }
 }
+
 
 export default async function AssetDetailWithData({ id }: { id: string }) {
   const asset = await fetchAssetDetails(id);

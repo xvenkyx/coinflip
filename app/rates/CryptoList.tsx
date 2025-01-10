@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CryptoList({ assets }: { assets: any[] }) {
   const iconUrl = (symbol: string) =>
@@ -15,12 +16,14 @@ export default function CryptoList({ assets }: { assets: any[] }) {
           className="p-4 border rounded-lg hover:shadow-lg transition-transform transform hover:scale-105 bg-white"
         >
           <div className="flex items-center space-x-4">
-            <img
+          <Image
               src={iconUrl(asset.symbol)}
               alt={asset.name}
               className="w-12 h-12 object-contain"
+              width={48}
+              height={48}
               onError={(e) => {
-                (e.target as HTMLImageElement).src = "/icons/color/default.svg"; // Fallback icon
+                (e.target as HTMLImageElement).src = "/icons/color/dcn.svg";
               }}
             />
             <div>
