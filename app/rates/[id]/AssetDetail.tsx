@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -31,6 +32,28 @@ export default function AssetDetail({
   history: any[];
 }) {
   const router = useRouter();
+
+  // Websocket - start
+  const [price, setPrice] = useState(asset.priceUsd);
+
+  useEffect(() => {
+    const ws = new WebSocket(`wss://ws.coincap.io/prices?assets=${asset.id}`);
+
+    ws.onmessage = (event) => {
+      const updatedPrices = JSON.parse(event.data);
+      if (updatedPrices[asset.id]) {
+        setPrice(updatedPrices[asset.id]);
+      }
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    return () => ws.close(); // Clean up WebSocket connection on unmount
+  }, [asset.id]);
+  // Websocket - end
+
   const chartData = history.length
     ? {
         labels: history.map((point) => new Date(point.time).toLocaleDateString()),
@@ -88,9 +111,7 @@ export default function AssetDetail({
           </div>
           <div>
             <p className="text-gray-600 font-semibold">Price:</p>
-            <p className="text-lg font-bold text-green-600">
-              ${parseFloat(asset.priceUsd).toFixed(2)}
-            </p>
+            <p className="text-lg font-bold text-green-600">${parseFloat(price).toFixed(2)}</p>
           </div>
           <div>
             <p className="text-gray-600 font-semibold">24h Change:</p>
